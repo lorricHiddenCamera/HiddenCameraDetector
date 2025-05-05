@@ -1,7 +1,6 @@
 workflows:
   ios-app-store:
     name: Upload build to ASC
-
     integrations:
       app_store_connect: "CodeMagic API"
 
@@ -11,18 +10,25 @@ workflows:
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
+        TEAM_ID: "74YTNA35A3"
+        PROFILE_NAME: "HiddenProfile"         # как отображается в Xcode
+        CODE_SIGN_ID: "Apple Distribution"
 
     scripts:
-      # 1️⃣ Архив + экспорт IPA
       - name: Archive & export
         script: |
           set -e
+          # 📍 Явно указываем профиль, сертификат и team‑id
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
                      -destination 'generic/platform=iOS' \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -allowProvisioningUpdates \
+                     DEVELOPMENT_TEAM="$TEAM_ID" \
+                     CODE_SIGN_STYLE=Manual \
+                     CODE_SIGN_IDENTITY="$CODE_SIGN_ID" \
+                     PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
                      clean archive
 
           xcodebuild -exportArchive \
@@ -42,11 +48,10 @@ workflows:
         submit_to_testflight: false
         submit_to_app_store:  false
 
-# ⬇️ Codemagic сам скачает эти файлы и положит в keychain билд‑агента
 code_signing:
   certificates:
-    - certificate: Hidden          # reference‑name p12
-      password:   $CERT_PASSWORD   # переменная в appstore_credentials
+    - certificate: Hidden
+      password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile       # reference‑name .mobileprovision
+    - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
