@@ -88,7 +88,7 @@ workflows:
     publishing:
       app_store_connect:
         api_key:   $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id:    $APP_STORE_CONNECT_KEY_ID
+        key_id:    "A2K27N65XP"
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: false
         submit_to_app_store:  false
@@ -96,7 +96,7 @@ workflows:
 code_signing:
   certificates:
     - certificate: Hidden          # убедитесь, что spelling 100 %
-      password:   $CERT_PASSWORD
+      password:   "r2Nf6xSB"
   provisioning_profiles:
     - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
