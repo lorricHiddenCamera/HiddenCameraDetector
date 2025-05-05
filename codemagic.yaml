@@ -3,12 +3,9 @@ workflows:
     name: iOS App Store Build
     environment:
       vars:
-        XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
+        XCODE_PROJECT: "HiddenCameraDetector/HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME: "HiddenCameraDetector"
       xcode: latest
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: dev.legacy.HiddenCameraDetector
     scripts:
       - name: Build .ipa
         script: |
@@ -16,6 +13,8 @@ workflows:
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
             -configuration Release \
+            -allowProvisioningUpdates \
+            -destination generic/platform=iOS \
             archive -archivePath $CM_BUILD_DIR/$XCODE_SCHEME.xcarchive
 
           xcodebuild -exportArchive \
@@ -29,3 +28,10 @@ workflows:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+
+    code_signing:
+      certificates:
+        - certificate: Hidden
+          password: "vAvdbtoY"
+      provisioning_profiles:
+        - HiddenCameraDetector: HiddenProfile
