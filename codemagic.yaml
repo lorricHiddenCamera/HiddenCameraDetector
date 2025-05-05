@@ -7,20 +7,20 @@ workflows:
         XCODE_SCHEME: "HiddenCameraDetector"
       xcode: latest
     scripts:
-     - name: "Debug: проверить entitlements профиля"
-    script: |
-      PROFILE_PATH=$(find /Users/builder/Library/MobileDevice/Provisioning\ Profiles -name "*.mobileprovision" | grep HiddenProfile)
-      
-      echo "Найден профиль: $PROFILE_PATH"
+      - name: "Debug: проверить entitlements профиля"
+        script: |
+          PROFILE_PATH=$(find /Users/builder/Library/MobileDevice/Provisioning\ Profiles -name "*.mobileprovision" | grep HiddenProfile)
+          
+          echo "Найден профиль: $PROFILE_PATH"
 
-      if [ -f "$PROFILE_PATH" ]; then
-        echo "Расшифровка профиля:"
-        security cms -D -i "$PROFILE_PATH" > profile.plist
-        plutil -p profile.plist | grep com.apple.developer.networking.wifi-info
-      else
-        echo "Provisioning profile не найден."
-        exit 1
-      fi
+          if [ -f "$PROFILE_PATH" ]; then
+            echo "Расшифровка профиля:"
+            security cms -D -i "$PROFILE_PATH" > profile.plist
+            plutil -p profile.plist | grep com.apple.developer.networking.wifi-info || echo "Capability НЕ НАЙДЕНА"
+          else
+            echo "Provisioning profile не найден."
+            exit 1
+          fi
 
       - name: Build .ipa
         script: |
