@@ -2,8 +2,8 @@ workflows:
   ios-app-store:
     name: Upload build to ASC
 
-    integrations:         # Apple Developer Portal key
-      app_store_connect:  "CodeMagic API"        # тот же или отдельный ключ
+    integrations:
+      app_store_connect:  "CodeMagic API"
 
     environment:
       xcode: 16.3
@@ -18,7 +18,7 @@ workflows:
           xcode-project use-profiles \
             --project "$XCODE_PROJECT" \
             --target "$XCODE_SCHEME" \
-            --profile "HiddenProfileWiFi" \
+            --profile "HiddenProfile" \
             --certificate "Hidden" \
             --bundle-id dev.legacy.HiddenCameraDetector
 
@@ -55,5 +55,5 @@ code_signing:
     - certificate: Hidden
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfileWiFi
+    - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
