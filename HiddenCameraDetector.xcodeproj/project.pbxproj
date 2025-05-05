@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		171ECA372DC8F20500313404 /* codemagic.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 171ECA362DC8F20500313404 /* codemagic.yaml */; };
+		171ECA392DC8F8C700313404 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 171ECA382DC8F8C700313404 /* ExportOptions.plist */; };
 		17416FD82D661619002ED94C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17416FD72D661619002ED94C /* RealmSwift */; };
 		1741743B2D688647002ED94C /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 17416FD72D661619002ED94C /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		174174452D68A3A9002ED94C /* IperfSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 174174442D68A3A9002ED94C /* IperfSwift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		171ECA362DC8F20500313404 /* codemagic.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = codemagic.yaml; sourceTree = "<group>"; };
+		171ECA382DC8F8C700313404 /* ExportOptions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
 		17416FBD2D6615D1002ED94C /* HiddenCameraDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCameraDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,6 +91,7 @@
 		17416FB42D6615D1002ED94C = {
 			isa = PBXGroup;
 			children = (
+				171ECA382DC8F8C700313404 /* ExportOptions.plist */,
 				171ECA362DC8F20500313404 /* codemagic.yaml */,
 				17416FBF2D6615D1002ED94C /* HiddenCameraDetector */,
 				17416FBE2D6615D1002ED94C /* Products */,
@@ -182,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				171ECA372DC8F20500313404 /* codemagic.yaml in Resources */,
+				171ECA392DC8F8C700313404 /* ExportOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +208,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HiddenCameraDetector/HiddenCameraDetector.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -232,6 +236,7 @@
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.legacy.HiddenCameraDetector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -248,7 +253,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HiddenCameraDetector/HiddenCameraDetector.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -276,6 +281,7 @@
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.legacy.HiddenCameraDetector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
