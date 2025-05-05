@@ -1,6 +1,7 @@
 workflows:
   ios-app-store:
     name: Upload build to ASC
+
     integrations:
       app_store_connect: "CodeMagic API"
 
@@ -10,20 +11,14 @@ workflows:
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
+      ios_signing:                            # 👉 автоматическое подписание
+        distribution_type: app_store
+        bundle_identifier: dev.legacy.HiddenCameraDetector
 
     scripts:
-      - name: Init keychain & import assets
+      - name: Archive & export
         script: |
-          keychain initialize
-          keychain add-certificates          # подтянет Hidden.p12 + HiddenProfile
-
-      - name: Apply profile
-        script: |
-          xcode-project use-profiles \
-            --project "$XCODE_PROJECT"
-
-      - name: Archive
-        script: |
+          set -e
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
@@ -32,11 +27,10 @@ workflows:
                      -allowProvisioningUpdates \
                      clean archive
 
-      - name: Export IPA
-        script: |
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -exportOptionsPlist ExportOptions.plist \
+                     -allowProvisioningUpdates \
                      -exportPath "$CM_EXPORT_DIR"
 
     artifacts:
@@ -49,3 +43,12 @@ workflows:
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: false
         submit_to_app_store:  false
+
+# ⬇️  ОБЯЗАТЕЛЬНО — именно отсюда Codemagic забирает p12 и профиль
+code_signing:
+  certificates:
+    - certificate: Hidden          # reference‑name p12 в UI
+      password:   $CERT_PASSWORD   # переменная в группе appstore_credentials
+  provisioning_profiles:
+    - profile: HiddenProfile       # reference‑name .mobileprovision
+      bundle_id: dev.legacy.HiddenCameraDetector
