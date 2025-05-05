@@ -7,15 +7,25 @@ workflows:
 
     environment:
       xcode: 16.3
-      groups: [appstore_credentials]          # API key + CERT_PASSWORD
+      groups: [appstore_credentials]        # API key + CERT_PASSWORD
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
-      ios_signing:                            # 👉 автоматическое подписание
-        distribution_type: app_store
-        bundle_identifier: dev.legacy.HiddenCameraDetector
 
     scripts:
+      # 1️⃣ Создать keychain + импортировать сертификат и профиль
+      - name: Init signing assets
+        script: |
+          keychain initialize               # private keychain
+          keychain add-certificates         # возьмёт Hidden.p12 + HiddenProfile
+
+      # 2️⃣ Прописать UUID HiddenProfile во все конфигурации проекта
+      - name: Apply provisioning profile
+        script: |
+          xcode-project use-profiles \
+            --project "$XCODE_PROJECT"
+
+      # 3️⃣ Архив + экспорт IPA
       - name: Archive & export
         script: |
           set -e
@@ -30,7 +40,6 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -exportOptionsPlist ExportOptions.plist \
-                     -allowProvisioningUpdates \
                      -exportPath "$CM_EXPORT_DIR"
 
     artifacts:
@@ -44,11 +53,11 @@ workflows:
         submit_to_testflight: false
         submit_to_app_store:  false
 
-# ⬇️  ОБЯЗАТЕЛЬНО — именно отсюда Codemagic забирает p12 и профиль
+# ⬇️  Codemagic скачает ФАЙЛЫ отсюда и положит в keychain (без этого шаг add‑certificates ничего не найдёт)
 code_signing:
   certificates:
-    - certificate: Hidden          # reference‑name p12 в UI
-      password:   $CERT_PASSWORD   # переменная в группе appstore_credentials
+    - certificate: Hidden                  # reference name в UI
+      password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile       # reference‑name .mobileprovision
+    - profile: HiddenProfile               # reference name в UI
       bundle_id: dev.legacy.HiddenCameraDetector
