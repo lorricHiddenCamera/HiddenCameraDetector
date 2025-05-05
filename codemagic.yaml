@@ -2,8 +2,7 @@ workflows:
   ios-app-store:
     name: Upload build to ASC
 
-    integrations:
-      developer_portal: "CodeMagic API"          # Apple Developer Portal key
+    integrations:         # Apple Developer Portal key
       app_store_connect:  "CodeMagic API"        # тот же или отдельный ключ
 
     environment:
