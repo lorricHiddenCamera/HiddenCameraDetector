@@ -50,9 +50,6 @@
             ReferencedContainer = "container:HiddenCameraDetector.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <StoreKitConfigurationFileReference
-         identifier = "../../HiddenCameraDetector/Subscription/Test.storekit">
-      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
