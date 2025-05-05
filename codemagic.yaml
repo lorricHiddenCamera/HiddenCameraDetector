@@ -13,14 +13,16 @@ workflows:
         XCODE_SCHEME:  "HiddenCameraDetector"
 
     scripts:
-      # 1️⃣ Прописать профиль ТОЛЬКО application‑таргету
       - name: Apply provisioning profile
         script: |
-          # файл HiddenProfile уже установлен Codemagic‑ом в ~/Library/MobileDevice/…
-          xcode-project use-profiles \
-            --project "$XCODE_PROJECT"        # без параметров profile / scheme
+          PROFILE_PATH=$(grep -lR "dev.legacy.HiddenCameraDetector" \
+                         "$HOME/Library/MobileDevice/Provisioning Profiles" | head -1)
+          if [ -z "$PROFILE_PATH" ]; then
+            echo "⛔  Provisioning profile for dev.legacy.HiddenCameraDetector not found"; exit 1
+          fi
+          echo "✅  Using provisioning profile at $PROFILE_PATH"
+          xcode-project use-profiles --project "$XCODE_PROJECT" --profile "$PROFILE_PATH"
 
-      # 2️⃣ Архив + экспорт IPA
       - name: Archive & export
         script: |
           set -e
@@ -31,7 +33,6 @@ workflows:
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -allowProvisioningUpdates \
                      clean archive
-
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -exportOptionsPlist ExportOptions.plist \
@@ -51,8 +52,8 @@ workflows:
 
 code_signing:
   certificates:
-    - certificate: Hidden          # Apple Distribution p12
+    - certificate: Hidden
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile       # .mobileprovision с Wi‑Fi capability
+    - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
