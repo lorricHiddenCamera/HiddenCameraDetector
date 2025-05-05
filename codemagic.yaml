@@ -19,6 +19,22 @@ workflows:
           echo "macOS   $(sw_vers -productVersion)"
           echo "Xcode   $(xcodebuild -version | head -1)"
           echo "Project $XCODE_PROJECT  Scheme $XCODE_SCHEME"
+      - name: 🔎  Check env secrets (masked)
+        script: |
+          check_var () {
+            local name="$1" ; local v="${!name}"
+            if [ -z "$v" ]; then
+              echo "❌  $name is EMPTY"
+            else
+              echo "✅  $name length=${#v}  head=${v:0:4}… tail=…${v: -4}"
+              echo "$v" | shasum -a 256 | awk '{print "    sha256="$1}'
+            fi
+          }
+
+          check_var APP_STORE_CONNECT_PRIVATE_KEY
+          check_var APP_STORE_CONNECT_KEY_ID
+          check_var APP_STORE_CONNECT_ISSUER_ID
+          check_var CERT_PASSWORD
 
       # 1. Список импортированных сертификатов
       - name: 🔎 Certificates
@@ -40,6 +56,7 @@ workflows:
                      -showBuildSettings | egrep "PRODUCT_BUNDLE_IDENTIFIER|CODE_SIGN_STYLE|DEVELOPMENT_TEAM"
 
       # 4. Archive + Export
+      
       - name: Archive & export
         script: |
           set -e
