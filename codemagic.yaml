@@ -8,9 +8,6 @@ workflows:
       xcode: latest
       ios_signing:
         distribution_type: app_store
-        certificate: Hidden
-        certificate_password: vAvdbtoY
-        provisioning_profile: HiddenProfile
         bundle_identifier: dev.legacy.HiddenCameraDetector
     scripts:
       - name: Build .ipa
