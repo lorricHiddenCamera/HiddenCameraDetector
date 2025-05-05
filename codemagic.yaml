@@ -1,26 +1,34 @@
 workflows:
   ios-app-store:
-    name: "iOS • Upload build to App Store Connect"
+    name: Upload build to ASC
+
+    integrations:
+      developer_portal: "CodeMagic API"          # Apple Developer Portal key
+      app_store_connect:  "CodeMagic API"        # тот же или отдельный ключ
 
     environment:
       xcode: 16.3
-      groups: [appstore_credentials]           # API‑key + p12‑pwd
+      groups: [appstore_credentials]
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: "dev.legacy.HiddenCameraDetector"   # = Info.plist
-
     scripts:
+      - name: "Apply manual signing"
+        script: |
+          xcode-project use-profiles \
+            --project "$XCODE_PROJECT" \
+            --target "$XCODE_SCHEME" \
+            --profile "HiddenProfileWiFi" \
+            --certificate "Hidden" \
+            --bundle-id dev.legacy.HiddenCameraDetector
+
       - name: "Archive"
         script: |
-          set -e
           xcodebuild -project "$XCODE_PROJECT" \
-                     -scheme  "$XCODE_SCHEME" \
+                     -scheme "$XCODE_SCHEME" \
                      -configuration Release \
-                     -destination "generic/platform=iOS" \
+                     -destination 'generic/platform=iOS' \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -allowProvisioningUpdates \
                      clean archive
@@ -30,7 +38,6 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -exportOptionsPlist ExportOptions.plist \
-                     -allowProvisioningUpdates \
                      -exportPath "$CM_EXPORT_DIR"
 
     artifacts:
@@ -38,7 +45,7 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key:   $APP_STORE_CONNECT_PRIVATE_KEY   # содержимое .p8
+        api_key:   $APP_STORE_CONNECT_PRIVATE_KEY
         key_id:    $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: false
@@ -46,8 +53,8 @@ workflows:
 
 code_signing:
   certificates:
-    - certificate: Hidden           # reference‑name в UI
+    - certificate: Hidden
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile        # reference‑name в UI
+    - profile: HiddenProfileWiFi
       bundle_id: dev.legacy.HiddenCameraDetector
