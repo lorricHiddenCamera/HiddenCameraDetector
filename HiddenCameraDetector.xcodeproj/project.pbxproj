@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		171ECA372DC8F20500313404 /* codemagic.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 171ECA362DC8F20500313404 /* codemagic.yaml */; };
 		17416FD82D661619002ED94C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17416FD72D661619002ED94C /* RealmSwift */; };
 		1741743B2D688647002ED94C /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 17416FD72D661619002ED94C /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		174174452D68A3A9002ED94C /* IperfSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 174174442D68A3A9002ED94C /* IperfSwift */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		171ECA362DC8F20500313404 /* codemagic.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = codemagic.yaml; sourceTree = "<group>"; };
 		17416FBD2D6615D1002ED94C /* HiddenCameraDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCameraDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 		17416FB42D6615D1002ED94C = {
 			isa = PBXGroup;
 			children = (
+				171ECA362DC8F20500313404 /* codemagic.yaml */,
 				17416FBF2D6615D1002ED94C /* HiddenCameraDetector */,
 				17416FBE2D6615D1002ED94C /* Products */,
 			);
@@ -178,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171ECA372DC8F20500313404 /* codemagic.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
