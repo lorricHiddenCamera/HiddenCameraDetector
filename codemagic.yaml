@@ -1,66 +1,45 @@
 workflows:
   ios-app-store:
-    name: Upload build to ASC (debug)
+    name: Upload build to ASC — deep debug
 
     integrations:
       app_store_connect: "CodeMagic API"
 
     environment:
       xcode: 16.3
-      groups: [appstore_credentials]              # API‑key + CERT_PASSWORD
+      groups: [appstore_credentials]          # API key + CERT_PASSWORD
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
     scripts:
-      # ───────────────────────────────────────────────────────────────
-      # 0.  Печатаем базовое окружение
-      - name: 🔎  Print environment
+      # 0. Печатаем базовое окружение
+      - name: 🔎 Env
         script: |
-          echo "CI user      : $(whoami)"
-          echo "macOS version: $(sw_vers -productVersion)"
-          echo "Xcode path   : $(xcode-select -p)"
-          echo "Team ID      : 74YTNA35A3"
-          echo "Project      : $XCODE_PROJECT"
-          echo "Scheme       : $XCODE_SCHEME"
+          echo "macOS   $(sw_vers -productVersion)"
+          echo "Xcode   $(xcodebuild -version | head -1)"
+          echo "Project $XCODE_PROJECT  Scheme $XCODE_SCHEME"
 
-      # 1.  Какие сертификаты реально импортированы в keychain
-      - name: 🔎  List certificates
+      # 1. Список импортированных сертификатов
+      - name: 🔎 Certificates
         script: |
-          echo "Certificates in Codemagic keychain:"
           keychain list-certificates || true
-
-          echo "Security identities:"
           security find-identity -v -p codesigning || true
 
-      # 2.  Какие provisioning‑profile скачал Codemagic
-      - name: 🔎  List profiles
+      # 2. Список профилей
+      - name: 🔎 Profiles
         script: |
           PROFILE_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
-          echo "Profiles at $PROFILE_DIR :"
           ls -l "$PROFILE_DIR" || true
 
-          # выводим BundleID, TeamID, Capabilities каждого профиля
-          for f in "$PROFILE_DIR"/*.mobileprovision; do
-            [ -e "$f" ] || continue
-            echo "----- $(basename "$f") ------------------------------------"
-            /usr/bin/security cms -D -i "$f" \
-              | /usr/bin/plutil -extract Name xml1 -o - - \
-              | xmllint --xpath "string(//string)" - 2>/dev/null
-            /usr/bin/security cms -D -i "$f" \
-              | /usr/bin/plutil -extract Entitlements xml1 -o - - \
-              | xmllint --xpath "//dict/key" - 2>/dev/null | tr '\n' ' '
-            echo; echo
-          done
-
-      # 3.  Проверяем, что проект видит те же BundleID/SigningStyle
-      - name: 🔎  Show build settings
+      # 3. Build settings таргета
+      - name: 🔎 Build settings
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
-                     -scheme "$XCODE_SCHEME" \
-                     -showBuildSettings | egrep "DEVELOPMENT_TEAM|PRODUCT_BUNDLE_IDENTIFIER|CODE_SIGN_STYLE"
+                     -scheme  "$XCODE_SCHEME" \
+                     -showBuildSettings | egrep "PRODUCT_BUNDLE_IDENTIFIER|CODE_SIGN_STYLE|DEVELOPMENT_TEAM"
 
-      # 4.  Сборка (без явных override ‑ пусть Xcode сам выбирает профиль)
+      # 4. Archive + Export
       - name: Archive & export
         script: |
           set -e
@@ -72,19 +51,14 @@ workflows:
                      -allowProvisioningUpdates \
                      clean archive
 
-          # 4.1  Извлекаем embedded.mobileprovision для анализа
+          # Проверяем embedded.mobileprovision
           APP_PATH="$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive/Products/Applications/$XCODE_SCHEME.app"
           if [[ -f "$APP_PATH/embedded.mobileprovision" ]]; then
-            echo "🔎  embedded.mobileprovision inside .app:"
-            /usr/bin/security cms -D -i "$APP_PATH/embedded.mobileprovision" \
-              | /usr/bin/plutil -extract Name xml1 -o - - \
-              | xmllint --xpath "string(//string)" -
-            echo
+            echo "embedded.mobileprovision present ✅"
           else
-            echo "⚠️  embedded.mobileprovision is missing in app bundle"
+            echo "embedded.mobileprovision missing ⚠️"
           fi
 
-          # 4.2  Экспорт IPA
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -exportOptionsPlist ExportOptions.plist \
@@ -102,11 +76,10 @@ workflows:
         submit_to_testflight: false
         submit_to_app_store:  false
 
-# Файлы, которые Codemagic должен скачать перед скриптами
 code_signing:
   certificates:
-    - certificate: Hidden                     # Apple Distribution p12
+    - certificate: Hidden          # убедитесь, что spelling 100 %
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile                  # .mobileprovision c Wi‑Fi capability
+    - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
