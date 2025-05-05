@@ -2,27 +2,24 @@ workflows:
   ios-app-store:
     name: "iOS • Upload build to App Store Connect"
 
-    # 1. Используем интеграцию Apple Developer Portal, которую вы добавили в UI
-    integrations:
-      app_store_connect: "CodeMagic API"       # точное имя ключа
-
-    # 2. Среда
     environment:
       xcode: 16.3
+      groups:
+        - appstore_credentials          # тут храним API‑key и p12‑пароль
+
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
-      ios_signing:                            # автоматический подбор сертификата/профиля
+      ios_signing:
         distribution_type: app_store
         bundle_identifier: "dev.legacy.HiddenCameraDetector"
 
-    # 3. Сборка
     scripts:
-      - name: "Archive"
+      - name: "Archive .xcarchive"
         script: |
           set -e
-          xcode-project use-profiles          # подтянуть Hidden.p12 и HiddenProfile.mobileprovision
+          xcode-project use-profiles
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
@@ -30,7 +27,7 @@ workflows:
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -allowProvisioningUpdates archive
 
-      - name: "Export IPA"
+      - name: "Export .ipa"
         script: |
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
@@ -38,14 +35,23 @@ workflows:
                      -allowProvisioningUpdates \
                      -exportPath "$CM_EXPORT_DIR"
 
-    # 4. Артефакты
     artifacts:
       - "$CM_EXPORT_DIR/*.ipa"
 
-    # 5. Публикация (только загрузка, без TestFlight/Review)
     publishing:
       app_store_connect:
-        credentials:
-          integration: "CodeMagic API"        # ← ключ наследуется отсюда
+        ### ←‑‑‑ Явно передаём реквизиты API‑key
+        api_key:   $APP_STORE_CONNECT_PRIVATE_KEY   # содержимое *.p8*
+        key_id:    $APP_STORE_CONNECT_KEY_ID        # пример: A2K27N65XP
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID     # UUID из App Store Connect
         submit_to_testflight: false
         submit_to_app_store:  false
+
+# Явно указываем, какие файлы подписи подтягивать из UI Codemagic
+code_signing:
+  certificates:
+    - certificate: Hidden
+      password:   $CERT_PASSWORD
+  provisioning_profiles:
+    - profile:    HiddenProfile
+      bundle_id:  dev.legacy.HiddenCameraDetector
