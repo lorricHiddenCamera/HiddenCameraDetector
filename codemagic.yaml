@@ -1,7 +1,12 @@
 workflows:
   ios-app-store:
     name: iOS App Store Build
+    integrations:
+      app_store_connect: codemagic
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: dev.legacy.HiddenCameraDetector
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME: "HiddenCameraDetector"
@@ -9,7 +14,7 @@ workflows:
     scripts:
       - name: "Debug: проверить entitlements профиля"
         script: |
-          PROFILE_PATH=$(find /Users/builder/Library/MobileDevice/Provisioning\ Profiles -name "*.mobileprovision" | grep HiddenProfile)
+          PROFILE_PATH=$(find ~/Library/MobileDevice/Provisioning\ Profiles -name "*.mobileprovision" | grep HiddenProfile)
           
           echo "Найден профиль: $PROFILE_PATH"
 
@@ -21,6 +26,10 @@ workflows:
             echo "Provisioning profile не найден."
             exit 1
           fi
+
+      - name: "Настройка code signing в Xcode"
+        script: |
+          xcode-project use-profiles
 
       - name: Build .ipa
         script: |
@@ -42,13 +51,4 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_ID
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-
-code_signing:
-  certificates:
-    - certificate: Hidden
-      password: "vAvdbtoY"
-  provisioning_profiles:
-    - HiddenCameraDetector: HiddenProfile
+        auth: integration
