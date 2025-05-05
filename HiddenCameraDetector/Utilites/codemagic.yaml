@@ -1,0 +1,26 @@
+workflows:
+  ios-app-store:
+    name: iOS App Store Build
+    environment:
+      vars:
+        XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
+        XCODE_SCHEME: "HiddenCameraDetector"
+      xcode: latest
+    scripts:
+      - name: Build .ipa
+        script: |
+          xcodebuild -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -sdk iphoneos \
+            -configuration Release \
+            archive -archivePath $CM_BUILD_DIR/$XCODE_SCHEME.xcarchive
+
+          xcodebuild -exportArchive \
+            -archivePath $CM_BUILD_DIR/$XCODE_SCHEME.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath $CM_BUILD_DIR/ExportedIPA
+    artifacts:
+      - $CM_BUILD_DIR/ExportedIPA/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: CodeMagic API
