@@ -1,54 +1,55 @@
 workflows:
   ios-app-store:
-    name: iOS App Store Build
-    integrations:
-      app_store_connect: codemagic
+    name: "iOS • Upload build to App Store Connect"
+    integrations:                     # <— ключ в разделе *Apple Developer Portal integration*
+      app_store_connect: CodeMagic API   # точное имя из UI (см. скрин)
+
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: dev.legacy.HiddenCameraDetector
+      xcode: 16.3
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
-        XCODE_SCHEME: "HiddenCameraDetector"
-      xcode: latest
+        XCODE_SCHEME:  "HiddenCameraDetector"
+
+      ios_signing:                     # Codemagic сам подставит нужные файлы
+        distribution_type: app_store
+        bundle_identifier: "dev.legacy.HiddenCameraDetector"
+
     scripts:
-      - name: "Debug: проверить entitlements профиля"
-        script: |
-          PROFILE_PATH=$(find ~/Library/MobileDevice/Provisioning\ Profiles -name "*.mobileprovision" | grep HiddenProfile)
-          
-          echo "Найден профиль: $PROFILE_PATH"
-
-          if [ -f "$PROFILE_PATH" ]; then
-            echo "Расшифровка профиля:"
-            security cms -D -i "$PROFILE_PATH" > profile.plist
-            plutil -p profile.plist | grep com.apple.developer.networking.wifi-info || echo "Capability НЕ НАЙДЕНА"
-          else
-            echo "Provisioning profile не найден."
-            exit 1
-          fi
-
-      - name: "Настройка code signing в Xcode"
-        script: |
+      - name: "Подтянуть профили"
+        script: |                      # чтобы Xcode видел .mobileprovision из UI
+          set -e
           xcode-project use-profiles
 
-      - name: Build .ipa
+      - name: "Archive"
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
-            -scheme "$XCODE_SCHEME" \
-            -sdk iphoneos \
-            -configuration Release \
-            -allowProvisioningUpdates \
-            -destination generic/platform=iOS \
-            archive -archivePath $CM_BUILD_DIR/$XCODE_SCHEME.xcarchive
+                     -scheme  "$XCODE_SCHEME" \
+                     -configuration Release \
+                     -destination "generic/platform=iOS" \
+                     -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
+                     -allowProvisioningUpdates archive
 
+      - name: "Export IPA"
+        script: |
           xcodebuild -exportArchive \
-            -archivePath $CM_BUILD_DIR/$XCODE_SCHEME.xcarchive \
-            -exportOptionsPlist ExportOptions.plist \
-            -exportPath $CM_BUILD_DIR/ExportedIPA
+                     -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
+                     -exportOptionsPlist ExportOptions.plist \
+                     -allowProvisioningUpdates \
+                     -exportPath "$CM_EXPORT_DIR"
 
     artifacts:
-      - $CM_BUILD_DIR/ExportedIPA/*.ipa
+      - "$CM_EXPORT_DIR/*.ipa"
 
-    publishing:
+    publishing:                       # только загрузка, без TestFlight и ревью
       app_store_connect:
-        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store:  false
+
+code_signing:
+  certificates:
+    - certificate: Hidden            # reference‑name из вкладки *Code signing certificates*
+      password:   $CERT_PASSWORD     # пароль хранится в *Team → Environment variables*
+
+  provisioning_profiles:
+    - profile:   HiddenProfile       # reference‑name из *Available provisioning profiles*
+      bundle_id: dev.legacy.HiddenCameraDetector
