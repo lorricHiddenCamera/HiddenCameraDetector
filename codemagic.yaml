@@ -16,16 +16,15 @@ workflows:
       - name: "Apply manual signing"
         script: |
           set -e
+          # 1️⃣ Применяем HiddenProfile ко ВСЕМ таргетам проекта
           xcode-project use-profiles \
             --project "$XCODE_PROJECT" \
-            --scheme  "$XCODE_SCHEME" \
-            --profile "HiddenProfile"            # reference‑name профиля
-          # профилю соответствует сертификат «Hidden» — подтянется автоматически
+            --profile "HiddenProfile"          # reference‑name в Codemagic UI
 
       - name: "Archive"
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
-                     -scheme "$XCODE_SCHEME" \
+                     -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
                      -destination 'generic/platform=iOS' \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
@@ -52,8 +51,8 @@ workflows:
 
 code_signing:
   certificates:
-    - certificate: Hidden                         # p12 в UI
+    - certificate: Hidden
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile: HiddenProfile                      # .mobileprovision в UI
+    - profile: HiddenProfile
       bundle_id: dev.legacy.HiddenCameraDetector
