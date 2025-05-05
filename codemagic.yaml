@@ -3,25 +3,30 @@ workflows:
     name: Upload build to ASC
 
     integrations:
-      app_store_connect: "CodeMagic API"          # ключ в UI
+      app_store_connect: "CodeMagic API"
 
     environment:
       xcode: 16.3
-      groups: [appstore_credentials]
+      groups: [appstore_credentials]          # API key + CERT_PASSWORD
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
     scripts:
-      - name: "Apply manual signing"
-        script: |
-          set -e
-          # 1️⃣ Применяем HiddenProfile ко ВСЕМ таргетам проекта
-          xcode-project use-profiles \
-            --project "$XCODE_PROJECT" \
-            --profile "HiddenProfile"          # reference‑name в Codemagic UI
+      # 1️⃣ создаём временный keychain
+      - name: Init keychain
+        script: keychain initialize
+      
+      # 2️⃣ добавляем п12 и .mobileprovision из UI
+      - name: Import signing assets
+        script: keychain add-certificates     # подтянет Hidden + HiddenProfile
 
-      - name: "Archive"
+      # 3️⃣ прописываем профиль во все targets
+      - name: Apply manual signing
+        script: xcode-project use-profiles    # аргументы НЕ нужны
+
+      # 4️⃣ архивируем
+      - name: Archive
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
@@ -31,7 +36,8 @@ workflows:
                      -allowProvisioningUpdates \
                      clean archive
 
-      - name: "Export IPA"
+      # 5️⃣ экспортируем IPA
+      - name: Export IPA
         script: |
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
