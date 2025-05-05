@@ -1,0 +1,60 @@
+{
+  "originHash" : "2daa1ecad8ed7f2c633d4d3d796fbf10b222d1708a25f82f6b12594a651788e1",
+  "pins" : [
+    {
+      "identity" : "appsflyerframework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppsFlyerSDK/AppsFlyerFramework",
+      "state" : {
+        "revision" : "c2d74549af8ac62d019fbe79c078aeb1e6f66630",
+        "version" : "6.16.2"
+      }
+    },
+    {
+      "identity" : "iperf-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/igorskh/iperf-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "58ec13d17ff2743b66032dd528cdb50927df8634"
+      }
+    },
+    {
+      "identity" : "lan-scanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nPoway/lan-scanner.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "1c88a06c286afde89e6fc880e8cf74296baa1b57"
+      }
+    },
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios",
+      "state" : {
+        "revision" : "4667fb080dea489e3a9a6b5d50e1a8e7deddf878",
+        "version" : "5.20.2"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "cccb3ca9e26ec452a29f2f0d4050d1e38b8a3d43",
+        "version" : "14.14.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "8cb364a6a63695df296f05b53f7c3f3b1dda6af3"
+      }
+    }
+  ],
+  "version" : 3
+}
