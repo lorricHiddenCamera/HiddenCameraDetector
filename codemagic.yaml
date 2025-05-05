@@ -6,7 +6,13 @@ workflows:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME: "HiddenCameraDetector"
       xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: dev.legacy.HiddenCameraDetector
     scripts:
+      - name: Apply code signing settings from Codemagic
+        script: |
+          xcode-project use-profiles
       - name: Build .ipa
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
@@ -26,10 +32,3 @@ workflows:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-
-code_signing:
-  certificates:
-    - certificate: Hidden
-      password: "vAvdbtoY"
-  provisioning_profiles:
-    - HiddenCameraDetector: HiddenProfile
