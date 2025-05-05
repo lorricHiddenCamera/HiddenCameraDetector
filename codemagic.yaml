@@ -4,30 +4,28 @@ workflows:
 
     environment:
       xcode: 16.3
-      groups:
-        - appstore_credentials          # тут храним API‑key и p12‑пароль
-
+      groups: [appstore_credentials]           # API‑key + p12‑pwd
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: "dev.legacy.HiddenCameraDetector"
+        bundle_identifier: "dev.legacy.HiddenCameraDetector"   # = Info.plist
 
     scripts:
-      - name: "Archive .xcarchive"
+      - name: "Archive"
         script: |
           set -e
-          xcode-project use-profiles
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
                      -destination "generic/platform=iOS" \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
-                     -allowProvisioningUpdates archive
+                     -allowProvisioningUpdates \
+                     clean archive
 
-      - name: "Export .ipa"
+      - name: "Export IPA"
         script: |
           xcodebuild -exportArchive \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
@@ -40,18 +38,16 @@ workflows:
 
     publishing:
       app_store_connect:
-        ### ←‑‑‑ Явно передаём реквизиты API‑key
-        api_key:   $APP_STORE_CONNECT_PRIVATE_KEY   # содержимое *.p8*
-        key_id:    $APP_STORE_CONNECT_KEY_ID        # пример: A2K27N65XP
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID     # UUID из App Store Connect
+        api_key:   $APP_STORE_CONNECT_PRIVATE_KEY   # содержимое .p8
+        key_id:    $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: false
         submit_to_app_store:  false
 
-# Явно указываем, какие файлы подписи подтягивать из UI Codemagic
 code_signing:
   certificates:
-    - certificate: Hidden
+    - certificate: Hidden           # reference‑name в UI
       password:   $CERT_PASSWORD
   provisioning_profiles:
-    - profile:    HiddenProfile
-      bundle_id:  dev.legacy.HiddenCameraDetector
+    - profile: HiddenProfile        # reference‑name в UI
+      bundle_id: dev.legacy.HiddenCameraDetector
