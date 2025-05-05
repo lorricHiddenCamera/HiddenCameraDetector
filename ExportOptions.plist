@@ -4,11 +4,18 @@
 <dict>
     <key>method</key>
     <string>app-store</string>
-    <key>uploadBitcode</key>
-    <false/>
+    <key>signingStyle</key>
+    <string>manual</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>dev.legacy.HiddenCameraDetector</key>
+        <string>HiddenProfile</string>
+    </dict>
+    <key>compileBitcode</key>
+    <true/>
     <key>uploadSymbols</key>
     <true/>
-    <key>compileBitcode</key>
+    <key>stripSwiftSymbols</key>
     <true/>
 </dict>
 </plist>
