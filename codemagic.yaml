@@ -6,36 +6,32 @@ workflows:
 
     environment:
       xcode: 16.3
-      groups: [appstore_credentials]          # API‑key + CERT_PASSWORD
+      groups: [appstore_credentials]          # API key + CERT_PASSWORD
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
     scripts:
-      # 1️⃣ Создаём временный keychain и подтягиваем всё из UI
       - name: Init keychain & import assets
         script: |
           keychain initialize
-          keychain add-certificates          # загрузит Hidden.p12 + HiddenProfile
+          keychain add-certificates          # подтянет Hidden.p12 + HiddenProfile
 
-      # 2️⃣ Прописываем профиль во все таргеты
-      - name: Apply profile to project
+      - name: Apply profile
         script: |
           xcode-project use-profiles \
-            --project "$XCODE_PROJECT"       # доп.параметры не нужны
+            --project "$XCODE_PROJECT"
 
-      # 3️⃣ Архивируем
       - name: Archive
         script: |
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
-                     -destination "generic/platform=iOS" \
+                     -destination 'generic/platform=iOS' \
                      -archivePath "$CM_BUILD_DIR/$XCODE_SCHEME.xcarchive" \
                      -allowProvisioningUpdates \
                      clean archive
 
-      # 4️⃣ Экспортируем IPA
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
