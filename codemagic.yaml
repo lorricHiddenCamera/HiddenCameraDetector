@@ -1,27 +1,28 @@
 workflows:
   ios-app-store:
     name: "iOS • Upload build to App Store Connect"
-    integrations:                     # <— ключ в разделе *Apple Developer Portal integration*
-      app_store_connect: CodeMagic API   # точное имя из UI (см. скрин)
 
+    # 1. Используем интеграцию Apple Developer Portal, которую вы добавили в UI
+    integrations:
+      app_store_connect: "CodeMagic API"       # точное имя ключа
+
+    # 2. Среда
     environment:
       xcode: 16.3
       vars:
         XCODE_PROJECT: "HiddenCameraDetector.xcodeproj"
         XCODE_SCHEME:  "HiddenCameraDetector"
 
-      ios_signing:                     # Codemagic сам подставит нужные файлы
+      ios_signing:                            # автоматический подбор сертификата/профиля
         distribution_type: app_store
         bundle_identifier: "dev.legacy.HiddenCameraDetector"
 
+    # 3. Сборка
     scripts:
-      - name: "Подтянуть профили"
-        script: |                      # чтобы Xcode видел .mobileprovision из UI
-          set -e
-          xcode-project use-profiles
-
       - name: "Archive"
         script: |
+          set -e
+          xcode-project use-profiles          # подтянуть Hidden.p12 и HiddenProfile.mobileprovision
           xcodebuild -project "$XCODE_PROJECT" \
                      -scheme  "$XCODE_SCHEME" \
                      -configuration Release \
@@ -37,19 +38,14 @@ workflows:
                      -allowProvisioningUpdates \
                      -exportPath "$CM_EXPORT_DIR"
 
+    # 4. Артефакты
     artifacts:
       - "$CM_EXPORT_DIR/*.ipa"
 
-    publishing:                       # только загрузка, без TestFlight и ревью
+    # 5. Публикация (только загрузка, без TestFlight/Review)
+    publishing:
       app_store_connect:
+        credentials:
+          integration: "CodeMagic API"        # ← ключ наследуется отсюда
         submit_to_testflight: false
         submit_to_app_store:  false
-
-code_signing:
-  certificates:
-    - certificate: Hidden            # reference‑name из вкладки *Code signing certificates*
-      password:   $CERT_PASSWORD     # пароль хранится в *Team → Environment variables*
-
-  provisioning_profiles:
-    - profile:   HiddenProfile       # reference‑name из *Available provisioning profiles*
-      bundle_id: dev.legacy.HiddenCameraDetector
