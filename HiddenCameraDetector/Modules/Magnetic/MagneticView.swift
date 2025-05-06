@@ -87,6 +87,7 @@ class MagneticView: BaseView {
     }()
     
     override func setupView() {
+        infoLabel.isHidden = true
         backgroundColor = .lightGrayF2F8FF
         setupNavigationBar()
         setupWifiConnectView()

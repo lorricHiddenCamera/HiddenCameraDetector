@@ -48,15 +48,15 @@ class OnboardingFlowCoordinator: Coordinator {
     }
     
     private func createStepTwo() -> OnboardingStepController {
-        let fullText = "Use a Scanner\n to find suspicious\n devices in real-time"
+        let fullText = "Network Analyzer\nMonitor Wi‑Fi & Bluetooth signal levels"
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        let coloredRange = (fullText as NSString).range(of: "Use a Scanner")
+        let coloredRange = (fullText as NSString).range(of: "Network Analyzer")
         attributedText.addAttribute(.foregroundColor, value: UIColor.blue384EA1, range: coloredRange)
         let stepTwo = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb2WithButton : UIImage.onb2,
             header: nil,
-            detail: iphoneWithButton ? "Easy analyze your surroundings in real-time, use a scanner to identify suspicious devices, protect privacy, and enhance your security" : "Easy analyze your surroundings\n in real-time, use a scanner to identify suspicious devices, protect privacy, \nand enhance your security",
+            detail: iphoneWithButton ? "Analyse real‑time Wi‑Fi and Bluetooth signal strength to assess network performance, coverage and interference." : "Analyse real‑time Wi‑Fi and Bluetooth signal strength to assess network performance, areas and interference.",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
@@ -75,7 +75,7 @@ class OnboardingFlowCoordinator: Coordinator {
     }
     
     private func createStepThree() -> OnboardingStepController {
-        let fullText = "Magnetic Sensor\nEasily detect magnetic\nfield variationss"
+        let fullText = "Magnetic Sensor\nMeasure ambient magnetic field strength"
         let attributedText = NSMutableAttributedString(string: fullText)
 
         let coloredRange = (fullText as NSString).range(of: "Magnetic Sensor")
@@ -83,7 +83,7 @@ class OnboardingFlowCoordinator: Coordinator {
         let stepThree = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb3WithButton : UIImage.onb3,
             header: nil,
-            detail: iphoneWithButton ? "Scan for magnetic activity to locate variations in magnetic fields and identify nearby electronic devices" : "Scan for magnetic activity to locate\nvariations in magnetic fields and identify\nnearby electronic devices",
+            detail: iphoneWithButton ? "Record and visualise magnetic flux variations to study environmental field changes and anomalies efficiently." : "Record and visualise magnetic flux variations to study environmental field changes and anomalies efficiently.",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
