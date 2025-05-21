@@ -34,6 +34,11 @@ final class InfoController: UIViewController {
         setupItems()
         setupTableView()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        infoView.navigationBar.proButton.isHidden = SubscriptionManager.shared.isPremiumUser()
+    }
    
     private func setupItems() {
         items = [

@@ -27,6 +27,11 @@ final class SettingsController: UIViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        settingsView.navigationBar.proButton.isHidden = SubscriptionManager.shared.isPremiumUser()
+    }
+    
     private func setupBindings() {
         viewModel.openURL = { url in
             UIApplication.shared.open(url, options: [:])

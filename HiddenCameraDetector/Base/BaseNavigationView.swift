@@ -55,6 +55,8 @@ class BaseNavigationView: BaseView {
         self.titleText = titleText
         super.init(frame: .zero)
         backButton.isHidden = isBackButtonHidden
+        
+        
     }
     
     required init?(coder: NSCoder) {

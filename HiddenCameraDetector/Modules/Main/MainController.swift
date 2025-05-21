@@ -27,6 +27,11 @@ class MainController: UIViewController {
         super.viewDidLoad()
         setupTargets()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        mainView.navigationBar.proButton.isHidden = SubscriptionManager.shared.isPremiumUser()
+    }
 }
 
 

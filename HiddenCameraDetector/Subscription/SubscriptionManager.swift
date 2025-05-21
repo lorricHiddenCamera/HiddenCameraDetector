@@ -34,15 +34,14 @@ public final class SubscriptionManager: NSObject, SubscriptionManaging {
     // MARK: -  SubscriptionManaging
     
     public func loadOfferings(completion: @escaping (Result<[Package], Error>) -> Void) {
-        Purchases.shared.getOfferings { [weak self] offerings, error in
-            guard let self = self else { return }
+        Purchases.shared.getOfferings { offerings, error in
             
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let defaultOffering = offerings?.current else {
+            guard let defaultOffering = offerings?["default"] else {
                 completion(.success([]))
                 return
             }

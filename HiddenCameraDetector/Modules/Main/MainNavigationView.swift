@@ -2,7 +2,7 @@ import UIKit
 
 class MainNavigationView: BaseMainNavigationView {
     
-    private lazy var proButton: UIButton = {
+    lazy var proButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage.proButton.resizeImage(to: CGSize(width: 90, height: 50)), for: .normal)

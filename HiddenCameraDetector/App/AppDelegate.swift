@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         AppsFlyerLib.shared().delegate = self
         AppsFlyerLib.shared().isDebug = false
         InternetAlertService.shared.startMonitoring()
+        Purchases.shared.attribution.collectDeviceIdentifiers()
+        Purchases.shared.attribution.setAppsflyerID(AppsFlyerLib.shared().getAppsFlyerUID())
         return true
     }
     

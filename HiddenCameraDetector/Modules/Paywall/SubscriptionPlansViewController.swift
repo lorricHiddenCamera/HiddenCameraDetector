@@ -309,8 +309,6 @@ class SubscriptionPlansViewController: UIViewController {
 
         guard let package = availablePackages[selectedPackageID] else { return }
         
-
-        print("package: \(package.identifier)")
         
         subManager.purchase(package: package) { [weak self] result in
             DispatchQueue.main.async {
@@ -323,7 +321,6 @@ class SubscriptionPlansViewController: UIViewController {
                     }
                 case .failure(let error):
                     self?.subscribeActionButton.isEnabled = true
-                    print("Error: \(error)")
                 }
             }
         }

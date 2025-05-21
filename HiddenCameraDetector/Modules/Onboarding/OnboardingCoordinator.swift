@@ -23,16 +23,16 @@ class OnboardingFlowCoordinator: Coordinator {
     }
     
     private func createStepOne() -> OnboardingStepController {
-        let fullText = "Bright Spot\ndetect reflections\nusing your camera"
+        let fullText = "Protect Yourself\nfrom potential\nprivacy threats"
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        let coloredRange = (fullText as NSString).range(of: "Bright Spot")
+        let coloredRange = (fullText as NSString).range(of: "Protect Yourself")
         attributedText.addAttribute(.foregroundColor, value: UIColor.blue384EA1, range: coloredRange)
         
         let stepOne = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb1WithButton : UIImage.onb1,
             header: nil,
-            detail: iphoneWithButton ? "Use your camera with a visual filter to highlight bright spots and reflections that may not be easily visible to the eye." : "Use your camera with a visual filter to\nhighlight bright spots and reflections\nthat may not be easily visible to the eye.",
+            detail: iphoneWithButton ? "Your personal data matters. Our app helps shield your information and ensures your digital privacy remains protected at all times" : "Your personal data matters. Our app helps shield your information and\nensures your digital privacy remains\nprotected at all times",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
@@ -75,15 +75,15 @@ class OnboardingFlowCoordinator: Coordinator {
     }
     
     private func createStepThree() -> OnboardingStepController {
-        let fullText = "Magnetic Sensor\nMeasure ambient magnetic field strength"
+        let fullText = "Detect and Explore\nNearby Unknown\nDevices"
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        let coloredRange = (fullText as NSString).range(of: "Magnetic Sensor")
+        let coloredRange = (fullText as NSString).range(of: "Detect and Explore")
         attributedText.addAttribute(.foregroundColor, value: UIColor.blue384EA1, range: coloredRange)
         let stepThree = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb3WithButton : UIImage.onb3,
             header: nil,
-            detail: iphoneWithButton ? "Record and visualise magnetic flux variations to study environmental field changes and anomalies efficiently." : "Record and visualise magnetic flux variations to study environmental field changes and anomalies efficiently.",
+            detail: iphoneWithButton ? "Begin scanning now to uncover what's around you. Easily identify nearby devices, understand their presence, and stay informed with confidence and clarity" : "Begin scanning now to uncover what's around you. Easily identify nearby devices, understand their presence, and stay informed with confidence and clarity",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
