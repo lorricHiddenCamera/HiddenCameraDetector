@@ -75,10 +75,10 @@ class OnboardingFlowCoordinator: Coordinator {
     }
     
     private func createStepThree() -> OnboardingStepController {
-        let fullText = "Detect and Explore\nNearby Unknown\nDevices"
+        let fullText = "Found and Explore\nNearby Unknown\nDevices"
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        let coloredRange = (fullText as NSString).range(of: "Detect and Explore")
+        let coloredRange = (fullText as NSString).range(of: "Found and Explore")
         attributedText.addAttribute(.foregroundColor, value: UIColor.blue384EA1, range: coloredRange)
         let stepThree = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb3WithButton : UIImage.onb3,

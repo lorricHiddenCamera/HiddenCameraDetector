@@ -89,23 +89,23 @@ final class InfoController: UIViewController {
                 iconName: "speedInfoIcon"
             ),
 
-            InfoItem(
-                title: "How to use Magnetic Sensor",
-                description: """
-        The Magnetic Sensor measures magnetic field variations around objects.
-
-        Instructions:
-        1. Open the Magnetic Sensor feature.
-        2. Move your device slowly near walls, furniture, and electronics.
-        3. Observe the magnetic field strength indicator:
-           • 🟢 Low – normal background levels
-           • 🟡 Medium – moderate variations
-           • 🔴 High – significant activity
-        4. Follow up on areas with elevated readings for further review.
-        """,
-                isExpanded: false,
-                iconName: "magneticInfoIcon"
-            )
+//            InfoItem(
+//                title: "How to use Magnetic Sensor",
+//                description: """
+//        The Magnetic Sensor measures magnetic field variations around objects.
+//
+//        Instructions:
+//        1. Open the Magnetic Sensor feature.
+//        2. Move your device slowly near walls, furniture, and electronics.
+//        3. Observe the magnetic field strength indicator:
+//           • 🟢 Low – normal background levels
+//           • 🟡 Medium – moderate variations
+//           • 🔴 High – significant activity
+//        4. Follow up on areas with elevated readings for further review.
+//        """,
+//                isExpanded: false,
+//                iconName: "magneticInfoIcon"
+//            )
         ]
 
     }

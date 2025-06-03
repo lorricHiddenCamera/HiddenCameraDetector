@@ -42,6 +42,7 @@ public final class SubscriptionManager: NSObject, SubscriptionManaging {
             }
             
             guard let defaultOffering = offerings?["default"] else {
+                print("Empty offerings")
                 completion(.success([]))
                 return
             }

@@ -82,7 +82,7 @@ extension MagneticController {
                 viewModel.stop()
                 isDetecting = false
                 
-                magneticView.startButton.setTitle("Start Detect", for: .normal)
+                magneticView.startButton.setTitle("Start", for: .normal)
                 magneticView.magneticNumberLabel.text = "0"
                 magneticView.magneticArrowImageView.transform = CGAffineTransform(rotationAngle: 0)
                 
@@ -93,7 +93,7 @@ extension MagneticController {
                 viewModel.start()
                 isDetecting = true
                 
-                magneticView.startButton.setTitle("Stop Detect", for: .normal)
+                magneticView.startButton.setTitle("Stop", for: .normal)
             }
         }
     }

@@ -201,7 +201,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HiddenCameraDetector/HiddenCameraDetector.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCameraDetector/Info.plist;
@@ -211,7 +211,7 @@
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app needs permission to use Bluetooth in order to discover, connect with, and manage compatible devices in the vicinity. This allows us to provide enhanced scanning and communication features";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to your camera so that you can find devices with camera.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app needs access to your local network in order to scan for and communicate with devices on the same network. We use this capability to discover connected equipment and provide seamless connectivity features.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location at all times, even in the background, to continuously detect and record your Wi-Fi network information. This ensures we can offer uninterrupted network scanning features, even when the app isn’t actively in use.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location at all times, even in the background, to continuously explore your Wi-Fi network information. This ensures we can offer uninterrupted network scanning features, even when the app isn’t actively in use.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "This app uses your location information to determine which Wi-Fi network you are connected to, allowing us to enhance scanning accuracy and network-related functionality.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs to access your location while you’re using it to accurately identify and display your current Wi-Fi network name. This helps us provide a more precise scanning experience and relevant network-based features.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide better advertising and analytics experiences.";
@@ -247,7 +247,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCameraDetector/HiddenCameraDetector.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCameraDetector/Info.plist;
@@ -257,7 +257,7 @@
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app needs permission to use Bluetooth in order to discover, connect with, and manage compatible devices in the vicinity. This allows us to provide enhanced scanning and communication features";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to your camera so that you can find devices with camera.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app needs access to your local network in order to scan for and communicate with devices on the same network. We use this capability to discover connected equipment and provide seamless connectivity features.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location at all times, even in the background, to continuously detect and record your Wi-Fi network information. This ensures we can offer uninterrupted network scanning features, even when the app isn’t actively in use.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location at all times, even in the background, to continuously explore your Wi-Fi network information. This ensures we can offer uninterrupted network scanning features, even when the app isn’t actively in use.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "This app uses your location information to determine which Wi-Fi network you are connected to, allowing us to enhance scanning accuracy and network-related functionality.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs to access your location while you’re using it to accurately identify and display your current Wi-Fi network name. This helps us provide a more precise scanning experience and relevant network-based features.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide better advertising and analytics experiences.";

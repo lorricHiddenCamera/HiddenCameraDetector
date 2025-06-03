@@ -101,6 +101,7 @@ class SubscriptionPlansViewController: UIViewController {
         
         subManager.loadOfferings { [weak self] result in
             DispatchQueue.main.async {
+                
                 switch result {
                 case .success(let packages):
                     for package in packages {
@@ -124,7 +125,6 @@ class SubscriptionPlansViewController: UIViewController {
                 }
             }
         }
-        print("Current status: \(subManager.isPremiumUser())")
         
         setupBackdrop()
         setupDismissButton()

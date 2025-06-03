@@ -108,7 +108,7 @@ class PreviewResultController: UIViewController {
         totalDevicesView.translatesAutoresizingMaskIntoConstraints = false
         totalDevicesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        totalDevicesLabel.text = "\(viewModel.getNumberOfAllDevices()) Total Devices Detected"
+        totalDevicesLabel.text = "\(viewModel.getNumberOfAllDevices()) Total Devices Found"
         
         NSLayoutConstraint.activate([
             totalDevicesView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
