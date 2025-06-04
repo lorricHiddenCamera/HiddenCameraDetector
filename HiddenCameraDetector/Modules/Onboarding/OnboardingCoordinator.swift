@@ -56,7 +56,7 @@ class OnboardingFlowCoordinator: Coordinator {
         let stepTwo = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb2WithButton : UIImage.onb2,
             header: nil,
-            detail: iphoneWithButton ? "Analyse real‑time Wi‑Fi and Bluetooth signal strength to assess network performance, coverage and interference." : "Analyse real‑time Wi‑Fi and Bluetooth signal strength to assess network performance, areas and interference.",
+            detail: iphoneWithButton ? "Easy analyze your surroundings in real-time, use a detector to identify unknown devices, protect privacy, and enhance your security" : "Easy analyze your surroundings in real-time, use a detector to identify unknown devices, protect privacy, and enhance your security",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
@@ -83,7 +83,7 @@ class OnboardingFlowCoordinator: Coordinator {
         let stepThree = OnboardingStepController(
             image: iphoneWithButton ? UIImage.onb3WithButton : UIImage.onb3,
             header: nil,
-            detail: iphoneWithButton ? "Begin scanning now to uncover what's around you. Easily identify nearby devices, understand their presence, and stay informed with confidence and clarity" : "Begin scanning now to uncover what's around you. Easily identify nearby devices, understand their presence, and stay informed with confidence and clarity",
+            detail: iphoneWithButton ? "Begin scanning to uncover what's around you. Identify nearby devices, understand their presence, and stay informed with confidence and clarity" : "Begin scanning to uncover what's around you. Identify nearby devices, understand their presence, and stay informed with confidence and clarity",
             buttonTitle: "Continue",
             headerAtributtedText: attributedText
         )
