@@ -6,6 +6,8 @@ final class InfoController: UIViewController {
     
     private var items: [InfoItem] = []
     
+    let subManager = SubscriptionManager.shared
+    
     init(coordinator: InfoCoordinator) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -25,6 +27,15 @@ final class InfoController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        infoView.navigationBar.proButton.isHidden = subManager.isPremiumUser()
+        
+        subManager.observeCustomerInfoChanges { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.infoView.navigationBar.proButton.isHidden = self.subManager.isPremiumUser()
+            }
+        }
         
         infoView.navigationBar.onProButtonTapped = { [weak self] in
             guard let self else { return }

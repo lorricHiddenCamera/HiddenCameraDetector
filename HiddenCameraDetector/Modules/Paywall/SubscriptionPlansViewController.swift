@@ -110,11 +110,11 @@ class SubscriptionPlansViewController: UIViewController {
                         let price = package.storeProduct.localizedPriceString
 
                         switch package.identifier {
-                        case "weekly", "weekly_trial":
+                        case "weekly":
                             self?.weeklyPlan.updateCostText(price)
-                        case "monthly", "monthly_trial":
+                        case "monthly":
                             self?.monthlyPlan.updateCostText(price)
-                        case "annual", "annual_trial":
+                        case "annual":
                             self?.yearlyPlan.updateCostText(price)
                         default:
                             break
@@ -269,9 +269,6 @@ class SubscriptionPlansViewController: UIViewController {
         }
     }
 
-    
-    
-    
     @objc private func didTapDismiss() {
         dismiss(animated: true, completion: nil)
         triggerHapticFeedback(type: .selection)
@@ -319,7 +316,7 @@ class SubscriptionPlansViewController: UIViewController {
                         triggerHapticFeedback(type: .success)
                         self?.dismiss(animated: true)
                     }
-                case .failure(let error):
+                case .failure(_):
                     self?.subscribeActionButton.isEnabled = true
                 }
             }

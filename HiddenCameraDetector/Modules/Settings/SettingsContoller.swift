@@ -6,6 +6,7 @@ final class SettingsController: UIViewController {
     private let coordinator: SettingsCoordinator
     private let settingsView = SettingsView()
     private let viewModel = SettingsViewModel()
+    let subManager = SubscriptionManager.shared
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     init(coordinator: SettingsCoordinator) {
@@ -33,6 +34,14 @@ final class SettingsController: UIViewController {
     }
     
     private func setupBindings() {
+        
+        subManager.observeCustomerInfoChanges { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.settingsView.navigationBar.proButton.isHidden = self.subManager.isPremiumUser()
+            }
+        }
+        
         viewModel.openURL = { url in
             UIApplication.shared.open(url, options: [:])
         }

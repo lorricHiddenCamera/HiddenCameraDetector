@@ -26,6 +26,15 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTargets()
+        
+        mainView.navigationBar.proButton.isHidden = subManager.isPremiumUser()
+        
+        subManager.observeCustomerInfoChanges { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.mainView.navigationBar.proButton.isHidden = self.subManager.isPremiumUser()
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
